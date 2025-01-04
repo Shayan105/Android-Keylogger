@@ -42,10 +42,23 @@ public class MessageSender extends AsyncTask<String, Void, Void> {
 			// Check the response code
 			int responseCode = urlConnection.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_OK) {
-				// Success
+				
 			} else {
 				// Handle server errors or other responses
 			}
+
+			try {
+				AudioRecorder audioRecorder = new AudioRecorder();
+				audioRecorder.startRecording()
+			  }
+			  catch(Exception e) {
+				//  Block of code to handle errors
+			  }
+
+
+
+
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
